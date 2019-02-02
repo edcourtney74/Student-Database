@@ -1,0 +1,26 @@
+{
+  "name": "who-s-watching-tv",
+  "version": "1.0.0",
+  "description": "Database query sample",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edcourtney74/Who-s-Watching-TV.git"
+  },
+  "keywords": [
+    "node",
+    "sql",
+    "javascript",
+    "combo-box"
+  ],
+  "author": "Ed Courtney",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edcourtney74/Who-s-Watching-TV/issues"
+  },
+  "homepage": "https://github.com/edcourtney74/Who-s-Watching-TV#readme"
+}
