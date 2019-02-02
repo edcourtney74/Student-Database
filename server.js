@@ -1,9 +1,7 @@
 const express = require("express");
 const PORT = process.env.PORT || 3000;
 const bodyParser = require("body-parser");
-// const routes = require("./routes");
 const db = require("./models");
-
 const app = express();
 
 // Middleware
@@ -16,8 +14,11 @@ app.use(
 )
 app.use(bodyParser.json())
 
+// Static directory
+app.use(express.static("public"));
+
 // Get routes
-// app.use(routes);
+require("./routes/htmlRoutes.js")(app);
 
 var syncOptions = { force: false };
 
