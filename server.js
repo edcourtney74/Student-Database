@@ -19,6 +19,7 @@ app.use(express.static("public"));
 
 // Get routes
 require("./routes/htmlRoutes.js")(app);
+require("./routes/apiRoutes.js")(app);
 
 var syncOptions = { force: false };
 

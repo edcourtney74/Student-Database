@@ -22,11 +22,11 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true
         },
         grade: {
-            type: DataTypes.DECIMAL(3, 2),
+            type: DataTypes.DECIMAL(5, 2),
             allowNull: true
         },
         GPA: {
-            type: DataTypes.STRING,
+            type: DataTypes.DECIMAL (3, 2),
             allowNull: true
         },
     })
