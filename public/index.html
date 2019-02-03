@@ -16,69 +16,97 @@
 <body>
     <div class="container">
         <!-- Database header -->
-        <div class="row mt-5 py-1 justify-content-center" id="banner">
-            <h4>Student Database</h4>
+        <div class="row mt-3 py-1 justify-content-center" id="banner">
+            <h4 class="text-light">Student Database</h4>
         </div>
 
-        <!-- Filter areas -->
-        <div class="row">
-            <!-- Dropdown to choose initial filter -->
-            <div class="form-group">
-                <select class="form-control" id="initial-choice">
-                    <option selected>Sex</option>
-                    <option>State</option>
-                    <option>Zip</option>
-                    <option>Subject</option>
-                    <option>Grade</option>
-                    <option>GPA</option>
-                </select>
-            </div>
-            <!-- Dropdown to choose type of filter for text values -->
-            <div class="form-group">
-                <select class="form-control operator" id="filter-text">
-                    <option selected>Equals</option>
-                    <option>Does Not Equal</option>
-                </select>
-            </div>
-            <!-- Dropdown to choose type of filter for numbers -->
-            <div class="form-group">
-                <select class="form-control operator" id="filter-number">
-                    <option selected>Equals</option>
-                    <option>Greater Than</option>
-                    <option>Greater Than or Equals</option>
-                    <option>Less Than</option>
-                    <option>Less Than or Equals</option>
-                </select>
-            </div>
-            <!-- Dropdown options for Sex -->
-            <div class="form-group">
-                <select class="form-control criteria" id="sex">
-                    <option selected>Female</option>
-                    <option>Male</option>
-                </select>
-            </div>
-            <!-- Dropdown options for State -->
-            <div class="form-group">
-                <input type="text" class="form-control criteria" id="state" placeholder="State abbreviation">
-            </div>
-            <!-- Dropdown options for ZIP -->
-            <div class="form-group">
-                <input type="text" class="form-control criteria" id="zip" placeholder="Zip code">
-            </div>
-            <!-- Dropdown options for Subject -->
-            <div class="form-group">
-                <input type="text" class="form-control criteria" id="subject" placeholder="Subject name">
-            </div>
-            <!-- Dropdown options for numbers -->
-            <div class="form-group">
-                <input type="number" class="form-control criteria" id="number" placeholder="Enter number">
+        <!-- Search box -->
+        <div class="row search-box">
+            <div class="col-1 mt-1">
+                <h5>SEARCH</h5>
             </div>
 
+            <!-- Filter areas -->
+            <div class="col-4">
+                <div class="row mt-1">
+                    <!-- Dropdown to choose initial filter -->
+                    <div class="form-group mr-2">
+                        <select class="form-control form-control-sm" id="initial-choice">
+                            <option selected>Sex</option>
+                            <option>State</option>
+                            <option>Zip</option>
+                            <option>Subject</option>
+                            <option>Grade</option>
+                            <option>GPA</option>
+                        </select>
+                    </div>
+                    <!-- Dropdown to choose type of filter for text values -->
+                    <div class="form-group">
+                        <select class="form-control form-control-sm operator" id="filter-text">
+                            <option selected>Equals</option>
+                            <option>Does Not Equal</option>
+                        </select>
+                    </div>
+                    <!-- Dropdown to choose type of filter for numbers -->
+                    <div class="form-group">
+                        <select class="form-control form-control-sm operator" id="filter-number">
+                            <option selected>Equals</option>
+                            <option>Greater Than</option>
+                            <option>Greater Than or Equals</option>
+                            <option>Less Than</option>
+                            <option>Less Than or Equals</option>
+                        </select>
+                    </div>
+                    <!-- Dropdown options for Sex -->
+                    <div class="form-group">
+                        <select class="form-control form-control-sm criteria ml-2" id="sex">
+                            <option selected>Female</option>
+                            <option>Male</option>
+                        </select>
+                    </div>
+                    <!-- Dropdown options for State -->
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm criteria ml-2" id="state" placeholder="State abbreviation">
+                    </div>
+                    <!-- Dropdown options for ZIP -->
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm criteria ml-2" id="zip" placeholder="Zip code">
+                    </div>
+                    <!-- Dropdown options for Subject -->
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm criteria ml-2" id="subject" placeholder="Subject name">
+                    </div>
+                    <!-- Dropdown options for numbers -->
+                    <div class="form-group">
+                        <input type="number" class="form-control form-control-sm criteria ml-2" id="number" placeholder="Enter number">
+                    </div>
+
+                </div>
+                <div class="row mb-1 search-buttons">
+                    <!-- Search and add filter buttons -->
+                    <button type="submit" class="btn btn-primary btn-sm mr-1" id="search">Search</button>
+                    <button type="submit" class="btn btn-primary btn-sm" id="filter">Add Filter</button>
+                </div>
+            </div>
         </div>
-
-        <!-- Search and add filter buttons -->
-        <button type="submit" class="btn btn-primary btn-sm" id="search">Search</button>
-        <button type="submit" class="btn btn-primary btn-sm" id="filter">Add Filter</button>
+        <!-- Table data display -->
+        <div class="row mt-2">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Sex</th>
+                        <th scope="col">State</th>
+                        <th scope="col">Zip</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Grade</th>
+                        <th scope="col">GPA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
 
 
         <!-- jQuery-->
