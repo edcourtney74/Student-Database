@@ -22,6 +22,7 @@
 
         <!-- Filter areas -->
         <div class="row">
+            <!-- Dropdown to choose initial filter -->
             <div class="form-group">
                 <select class="form-control" id="initial-choice">
                     <option selected>Sex</option>
@@ -32,20 +33,52 @@
                     <option>GPA</option>
                 </select>
             </div>
+            <!-- Dropdown to choose type of filter for text values -->
+            <div class="form-group">
+                <select class="form-control operator" id="filter-text">
+                    <option selected>Equals</option>
+                    <option>Does Not Equal</option>
+                </select>
+            </div>
+            <!-- Dropdown to choose type of filter for numbers -->
+            <div class="form-group">
+                <select class="form-control operator" id="filter-number">
+                    <option selected>Equals</option>
+                    <option>Greater Than</option>
+                    <option>Greater Than or Equals</option>
+                    <option>Less Than</option>
+                    <option>Less Than or Equals</option>
+                </select>
+            </div>
+            <!-- Dropdown options for Sex -->
             <div class="form-group">
                 <select class="form-control criteria" id="sex">
                     <option selected>Female</option>
                     <option>Male</option>
                 </select>
             </div>
+            <!-- Dropdown options for State -->
             <div class="form-group">
                 <input type="text" class="form-control criteria" id="state" placeholder="State abbreviation">
             </div>
+            <!-- Dropdown options for ZIP -->
+            <div class="form-group">
+                <input type="text" class="form-control criteria" id="zip" placeholder="Zip code">
+            </div>
+            <!-- Dropdown options for Subject -->
+            <div class="form-group">
+                <input type="text" class="form-control criteria" id="subject" placeholder="Subject name">
+            </div>
+            <!-- Dropdown options for numbers -->
+            <div class="form-group">
+                <input type="number" class="form-control criteria" id="number" placeholder="Enter number">
+            </div>
+
         </div>
 
         <!-- Search and add filter buttons -->
-        <button type="submit" class="btn btn-primary" id="search">Search</button>
-        <button type="submit" class="btn btn-primary" id="filter">Add Filter</button>
+        <button type="submit" class="btn btn-primary btn-sm" id="search">Search</button>
+        <button type="submit" class="btn btn-primary btn-sm" id="filter">Add Filter</button>
 
 
         <!-- jQuery-->

@@ -7,10 +7,18 @@
     background-color: #666666;
 }
 
+.criteria {
+    display: none;
+}
+
 #banner {
     background-color: #7ac7ad;
 }
 
-#state {
-    display: none
+#filter-number {
+    display: none;
+}
+
+#sex {
+    display: block;
 }

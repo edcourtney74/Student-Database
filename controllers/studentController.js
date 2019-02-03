@@ -1,6 +1,7 @@
 const db = require("../models");
 
 module.exports = {
+    // Query to find all students in the database
     viewAll: (req, res) => {
         db.Students.findAll({})
             .then(data => {
@@ -8,7 +9,8 @@ module.exports = {
             }).catch(err => res.json(err))
     },
 
-    findStudents: (req, res) => {
+    // Query to find all students that match criteria selected by the user
+    findStudents: (req, res) => {       
         console.log(req);
         db.Students.findAll({
             where: req.body
