@@ -2,8 +2,8 @@
 $(document).ready(() => {
 
     // GLOBAL VARIABLES
-    // Variable to hold where object to pass to database
-    let whereObj = {};
+    // Variable to hold parameters to pass for database query
+    let paramsObj = {};
 
     // GLOBAL FUNCTIONS
     // Function to retrieve all students on page load
@@ -31,19 +31,19 @@ $(document).ready(() => {
                 $("#filter-number").hide();
                 $(".criteria").hide();
                 $("#state").show();
-                break;            
+                break;
             case "Zip":
                 $("#filter-text").show();
                 $("#filter-number").hide();
                 $(".criteria").hide();
                 $("#zip").show();
-                break;            
+                break;
             case "Subject":
                 $("#filter-text").show();
                 $("#filter-number").hide();
                 $(".criteria").hide();
                 $("#subject").show();
-                break;            
+                break;
             case "Grade":
             case "GPA":
                 $("#filter-number").show();
@@ -53,7 +53,7 @@ $(document).ready(() => {
                 break;
         }
     }
-    // Function that saves info into whereObj when Add Filter button is clicked
+    // Function that saves info into paramsObj when Add Filter button is clicked
     addFilter = () => {
         // Grab value from the initial filter
         let filterChoice = $("#initial-choice").val()
@@ -70,63 +70,64 @@ $(document).ready(() => {
 
         // Choose switch statement to run based on user input
         if (filterId === "filter-text") {
-            // Run this switch when filter-text was used and create whereObj query
+            // Run this switch when filter-text was used and create where conditions for db query
             switch (filterType) {
                 case ("Equals"):
-                    whereObj[filterChoice] = searchTerm;
+                    paramsObj.where = { [filterChoice]: searchTerm };
                     break;
 
                 case ("Does Not Equal"):
-                    whereObj[filterChoice] = { "$ne": searchTerm };
+                    paramsObj.where = { [filterChoice]: { "$ne": searchTerm } };
                     break;
             }
+            console.log(paramsObj);
 
         } else if (filterId === "filter-number") {
             // Run this switch when filter-text was used and create whereObj query
             switch (filterType) {
                 case ("Equals"):
-                    whereObj[filterChoice] = { "$eq": searchTerm};
-                    break;            
+                    paramsObj.where = { [filterChoice]: { "$eq": searchTerm } };
+                    break;
                 case ("Greater Than"):
-                    whereObj[filterChoice] = { "$gt": searchTerm};
+                    paramsObj.where = { [filterChoice]: { "$gt": searchTerm } };
                     break;
                 case ("Greater Than or Equals"):
-                    whereObj[filterChoice] = { "$gte": searchTerm};
+                    paramsObj.where = { [filterChoice]: { "$gte": searchTerm } };    
                     break;
                 case ("Less Than"):
-                    whereObj[filterChoice] = { "$lt": searchTerm};
+                    paramsObj.where = { [filterChoice]: { "$lt": searchTerm } };
                     break;
                 case ("Less Than or Equals"):
-                    whereObj[filterChoice] = { "$lte": searchTerm};
+                    paramsObj.where = { [filterChoice]: { "$lte": searchTerm } };    
                     break;
             }
         }
     }
 
-        // CLICK FUNCTIONS ==========================================================
-        // Called when an initial choice is made in the select box
-        $("#initial-choice").change(() => {
-            // Run searchOptions function on click
-            searchOptions();
-        })
+    // CLICK FUNCTIONS ==========================================================
+    // Called when an initial choice is made in the select box
+    $("#initial-choice").change(() => {
+        // Run searchOptions function on click
+        searchOptions();
+    })
 
-        // Called when the Add Filter button is clicked
-        $("#filter").click(() => {
-            addFilter();
-        })
+    // Called when the Add Filter button is clicked
+    $("#filter").click(() => {
+        addFilter();
+    })
 
-        // Called when the Search button is clicked
-        $("#search").click(() => {
-            // Send an ajax post request, including the stringified array
-            $.post("api/students", whereObj)
-                .then((data) => {
-                    console.log(data);
-                }).catch((err) => {
-                    console.log(err);
-                })
-        })
+    // Called when the Search button is clicked
+    $("#search").click(() => {
+        // Send an ajax post request, including the stringified array
+        $.post("api/students", paramsObj)
+            .then((data) => {
+                console.log(data);
+            }).catch((err) => {
+                console.log(err);
+            })
+    })
 
-// ===========================================================================
+    // ===========================================================================
     // ON PAGE LOAD
     retrieveAll();
 

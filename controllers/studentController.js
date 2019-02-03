@@ -12,9 +12,8 @@ module.exports = {
     // Query to find all students that match criteria selected by the user
     findStudents: (req, res) => {       
         console.log(req);
-        db.Students.findAll({
-            where: req.body
-        }).then(data => {
+        db.Students.findAll(req.body)
+        .then(data => {
             res.json(data);
         }).catch(err => res.json(err))
     }
