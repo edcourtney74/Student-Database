@@ -16,36 +16,33 @@ $(document).ready(() => {
 
         // Switch statement to determine what option to show and hide the others
         switch (choice) {
+            case "First Name":
+            case "Last Name":
+            case "Address":
+            case "City":
+            case "County":
+            case "State":
+            case "Zip":
+            case "Subject":
+                $("#filter-text").show();
+                $("#filter-number").hide();
+                $(".criteria").hide();
+                $("#text-blank").show();
+                $("#sex-menu").hide();
+                break;
             case "Sex":
                 $("#filter-text").show();
                 $("#filter-number").hide();
                 $(".criteria").hide();
                 $("#sex").show();
                 break;
-            case "State":
-                $("#filter-text").show();
-                $("#filter-number").hide();
-                $(".criteria").hide();
-                $("#state").show();
-                break;
-            case "Zip":
-                $("#filter-text").show();
-                $("#filter-number").hide();
-                $(".criteria").hide();
-                $("#zip").show();
-                break;
-            case "Subject":
-                $("#filter-text").show();
-                $("#filter-number").hide();
-                $(".criteria").hide();
-                $("#subject").show();
-                break;
+            case "Age":
             case "Grade":
             case "GPA":
                 $("#filter-number").show();
                 $("#filter-text").hide();
                 $(".criteria").hide();
-                $("#number").show();
+                $("#number-blank").show();
                 break;
         }
     }
@@ -54,6 +51,12 @@ $(document).ready(() => {
     getFilterInfo = () => {
         // Grab value from the initial filter
         let filterChoice = $("#initial-choice").val()
+        // Change first name or last name to match database columns
+        if (filterChoice === "First Name") {
+            filterChoice = "first_name"
+        } else if (filterChoice === "Last Name") {
+            filterChoice = "last_name"
+        }
         console.log("FilterChoice: " + filterChoice)
 
         // Grab value from the type of filter
@@ -71,21 +74,23 @@ $(document).ready(() => {
         let table = "";
         // Switch statement to store variable
         switch (filterChoice) {
-            case ("Sex"):
-            case ("Age"):
+            case "first_name":
+            case "last_name":
+            case "Sex":
+            case "Age":
                 table = "nameWhere";
                 break;
             
-            case ("Address"):
-            case ("City"):
-            case ("County"):
-            case ("State"):
-            case ("Zip"):
+            case "Address":
+            case "City":
+            case "County":
+            case "State":
+            case "Zip":
                 table = "addressWhere";
                 break;
             
-            case ("Subject"):
-            case ("Grade"):
+            case "Subject":
+            case "Grade":
                 table = "courseWhere";
                 break;
         }
@@ -124,6 +129,10 @@ $(document).ready(() => {
 
         // Display search term and add to search term area
         $("#current").append("<span class='small d-inline'>" + filterChoice + filterType + searchTerm + "&nbsp&nbsp</span>")
+
+        // Clear previous search terms
+        $("#text-blank").val("");
+        $("#number-blank").val("");
 
         // Once filter data is set, run db query
         requestData();
@@ -172,6 +181,9 @@ $(document).ready(() => {
 
     // When the Search button is clicked, previous search values are erased, the new values are grabbed from the filter and a db query is run
     $("#search").click(() => {
+        // Create filter and run db query
+        getFilterInfo();
+        
         // Erase previous search params
         paramsObj = {
             nameWhere: [],
@@ -180,14 +192,21 @@ $(document).ready(() => {
         };
         // Clear display of previous search terms
         $("#current").empty();
-        // Create filter and run db query
-        getFilterInfo();
+        // Clear previous form data
+        $("#text-blank").val("");
+        $("#number-blank").val("");
+
+        
     })
 
     // When the Add Filter button is clicked, the new search terms are added to the paramsObj and a db query is run
     $("#filter").click(() => {
         // Create filter and run db query
         getFilterInfo();
+
+        // Clear previous search term fields
+        $("#text-blank").val("");
+        $("#number-blank").val("");
     })
 
     // When the Clear Filters button is clicked, the paramsObj will be reset and the full db will be displayed
@@ -197,8 +216,14 @@ $(document).ready(() => {
             addressWhere: [],
             courseWhere: []
         };
-        // Clear display of previous search terms
+        // Clear display of previous stored search terms
         $("#current").empty();
+
+        // Clear previous search term fields
+        $("#text-blank").val("");
+        $("#number-blank").val("");
+
+        // Request full database
         requestData();
     })
 

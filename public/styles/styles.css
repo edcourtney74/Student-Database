@@ -35,7 +35,10 @@ li {
     display: none;
 }
 
-
 #sex {
+    display: none;
+}
+
+#text-blank {
     display: block;
 }
