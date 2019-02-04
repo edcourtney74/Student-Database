@@ -2,9 +2,7 @@ const studentController = require("../controllers/studentController");
 
 module.exports = app => {
     
-    // Receives get request from client and calls function from controller
-    app.get("/api/students", studentController.viewAll);
-    
     // Receives post request from client and calls function from controller
-    app.post("/api/students", studentController.findStudents);
+    app.post("/api/names", studentController.findByNames);
+    app.post("/api/address", studentController.findByAddresses);
 }

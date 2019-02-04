@@ -23,6 +23,10 @@ li {
     margin-top: -.6rem;
 }
 
+.table-font {
+    font-size: .85rem;
+}
+
 #banner {
     border-bottom: #7ac7ad solid thin;
 }

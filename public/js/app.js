@@ -8,15 +8,44 @@ $(document).ready(() => {
     };
 
     // GLOBAL FUNCTIONS
-    // Function to display data in the table once retrieved
-    displayData = data => {
+    // Function to display data in the table once retrieved from a Names table search
+    displayDataName = data => {
         // Run a for loop to append data to the table
         for (let i = 0; i < data.length; i++) {
             // Create a new tr element
             let newRow = $("<tr>");
             // Append data to the new tr
-            newRow.append("<td>" + data[i].name + "</td>");
+            newRow.append("<td>" + data[i].first_name + "</td>");
+            newRow.append("<td>" + data[i].last_name + "</td>");
             newRow.append("<td>" + data[i].sex + "</td>");
+            newRow.append("<td>" + data[i].age + "</td>");
+            newRow.append("<td>" + data[i].Address.address + "</td>");
+            newRow.append("<td>" + data[i].Address.city + "</td>");
+            newRow.append("<td>" + data[i].Address.county + "</td>");
+            newRow.append("<td>" + data[i].Address.state + "</td>");
+            newRow.append("<td>" + data[i].Address.zip + "</td>");
+            newRow.append("<td>" + data[i].subject + "</td>");
+            newRow.append("<td>" + data[i].grade + "</td>");
+            newRow.append("<td>" + data[i].GPA + "</td>");
+            // Append the completed tr element to tbody
+            $("tbody").append(newRow); 
+        }
+    }
+    
+    // Function to display data in the table once retrieved from an Address table search
+    displayDataAddress = data => {
+        // Run a for loop to append data to the table
+        for (let i = 0; i < data.length; i++) {
+            // Create a new tr element
+            let newRow = $("<tr>");
+            // Append data to the new tr
+            newRow.append("<td>" + data[i].Name.first_name + "</td>");
+            newRow.append("<td>" + data[i].Name.last_name + "</td>");
+            newRow.append("<td>" + data[i].Name.sex + "</td>");
+            newRow.append("<td>" + data[i].Name.age + "</td>");
+            newRow.append("<td>" + data[i].address + "</td>");
+            newRow.append("<td>" + data[i].city + "</td>");
+            newRow.append("<td>" + data[i].county + "</td>");
             newRow.append("<td>" + data[i].state + "</td>");
             newRow.append("<td>" + data[i].zip + "</td>");
             newRow.append("<td>" + data[i].subject + "</td>");
@@ -25,7 +54,7 @@ $(document).ready(() => {
             // Append the completed tr element to tbody
             $("tbody").append(newRow); 
         }
-    } 
+    }
 
     // Function that shows more search options based on initial filter choice
     searchOptions = () => {
@@ -124,18 +153,47 @@ $(document).ready(() => {
         // Display search term and add to search term area
         $("#current").append("<span className='small d-inline'>" + filterChoice + filterType + searchTerm + "&nbsp&nbsp</span>")
 
-        // Once filter data is set, run db query
-        requestData();
+        // Once filter data is set, run correct db query based on filterChoice
+        switch(filterChoice) {
+            case("First Name"):
+            case("Last Name"):
+            case("Sex"):
+            case("Age"):
+                requestDataName();
+                break;
+            
+            case("City"):
+            case("County"):
+            case("State"):
+            case("Zip"):
+                requestDataAddress();
+                break;
+        }
     }
 
-    // Function to send an ajax post request to retrieve data
-    requestData = () => {
-        $.post("api/students", paramsObj)
+    // Function to send an ajax post request to retrieve names data
+    requestDataName = () => {
+        $.post("api/names", paramsObj)
             .then((data) => {
+                console.log(data);
                 // Empty previous data displayed
                 $("tbody").empty();
                 // Display new data
-                displayData(data);
+                displayDataName(data);
+            }).catch((err) => {
+                console.log(err);
+            })
+    }
+
+    // Function to send an ajax post request to retrieve names data
+    requestDataAddress = () => {
+        $.post("api/address", paramsObj)
+            .then((data) => {
+                console.log(data);
+                // Empty previous data displayed
+                $("tbody").empty();
+                // Display new data
+                displayDataAddress(data);
             }).catch((err) => {
                 console.log(err);
             })
@@ -173,10 +231,10 @@ $(document).ready(() => {
         };
         // Clear display of previous search terms
         $("#current").empty();
-        requestData();
+        requestDataName();
     })
 
     // ===========================================================================
     // ON PAGE LOAD
-    requestData();
+    requestDataName();
 });
