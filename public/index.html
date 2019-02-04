@@ -16,18 +16,18 @@
 <body>
     <div class="container">
         <!-- Database header -->
-        <div class="row mt-3 py-1 justify-content-center" id="banner">
-            <h4 class="text-light">Student Database</h4>
+        <div class="row mt-3 pt-1 justify-content-center" id="banner">
+            <h4>Student Database</h4>
         </div>
 
         <!-- Search box -->
-        <div class="row search-box">
+        <div class="row search-box mt-2">
             <div class="col-1 mt-1">
                 <h5>SEARCH</h5>
             </div>
 
             <!-- Filter areas -->
-            <div class="col-4">
+            <div class="col-5">
                 <div class="row mt-1">
                     <!-- Dropdown to choose initial filter -->
                     <div class="form-group mr-2">
@@ -85,10 +85,26 @@
                 <div class="row mb-1 search-buttons">
                     <!-- Search and add filter buttons -->
                     <button type="submit" class="btn btn-primary btn-sm mr-1" id="search">Search</button>
-                    <button type="submit" class="btn btn-primary btn-sm" id="filter">Add Filter</button>
+                    <button type="submit" class="btn btn-primary btn-sm mr-1" id="filter">Add Filter</button>
+                    <button type="submit" class="btn btn-primary btn-sm" id="clear">Clear Filters</button>
                 </div>
             </div>
+            <!-- Instructions section -->
+            <div class="col-6">
+                <ul>
+                    <li>Use Search to search with just one parameter.</li>
+                    <li>Use Add Filter to add as many parameters as you'd like.</li>
+                    <li>Use Clear Filters to remove all filters and see the full database.</li>
+                </ul>
+            </div>
+        </div>        
+        
+        <!-- Area to display current search/filter terms -->
+        <div class="row mt-2">
+            <span class="small d-inline">Current search terms: &nbsp&nbsp</span>
+            <span class="small d-inline" id="current"></span>
         </div>
+        
         <!-- Table data display -->
         <div class="row mt-2">
             <table class="table table-bordered">
@@ -107,7 +123,6 @@
                 </tbody>
             </table>
         </div>
-
 
         <!-- jQuery-->
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>

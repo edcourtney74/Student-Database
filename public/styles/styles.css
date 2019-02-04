@@ -1,3 +1,7 @@
+li {
+    font-size: .8rem;
+}
+
 .btn-primary {
     background-color: #7ac7ad;
     border: none;
@@ -20,7 +24,7 @@
 }
 
 #banner {
-    background-color: #7ac7ad;
+    border-bottom: #7ac7ad solid thin;
 }
 
 #filter-number {

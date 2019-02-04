@@ -3,16 +3,29 @@ $(document).ready(() => {
 
     // GLOBAL VARIABLES
     // Variable to hold parameters to pass for database query
-    let paramsObj = {};
+    let paramsObj = { 
+        where: []
+    };
 
     // GLOBAL FUNCTIONS
-    // Function to retrieve all students on page load
-    retrieveAll = () => {
-        $.get("api/students")
-            .then(data => {
-                console.log(data);
-            })
-    }
+    // Function to display data in the table once retrieved
+    displayData = data => {
+        // Run a for loop to append data to the table
+        for (let i = 0; i < data.length; i++) {
+            // Create a new tr element
+            let newRow = $("<tr>");
+            // Append data to the new tr
+            newRow.append("<td>" + data[i].name + "</td>");
+            newRow.append("<td>" + data[i].sex + "</td>");
+            newRow.append("<td>" + data[i].state + "</td>");
+            newRow.append("<td>" + data[i].zip + "</td>");
+            newRow.append("<td>" + data[i].subject + "</td>");
+            newRow.append("<td>" + data[i].grade + "</td>");
+            newRow.append("<td>" + data[i].GPA + "</td>");
+            // Append the completed tr element to tbody
+            $("tbody").append(newRow); 
+        }
+    } 
 
     // Function that shows more search options based on initial filter choice
     searchOptions = () => {
@@ -54,7 +67,7 @@ $(document).ready(() => {
         }
     }
     // Function that saves info into paramsObj when Add Filter button is clicked
-    addFilter = () => {
+    getFilterInfo = () => {
         // Grab value from the initial filter
         let filterChoice = $("#initial-choice").val()
 
@@ -63,45 +76,69 @@ $(document).ready(() => {
 
         // Grab id from the type of filter
         let filterId = $(".operator:visible").attr("id");
-        console.log(filterId);
 
         // Grab value from the search options
         let searchTerm = $(".criteria:visible").val()
 
         // Choose switch statement to run based on user input
         if (filterId === "filter-text") {
-            // Run this switch when filter-text was used and create where conditions for db query
+            // Run this switch when filter-text was used and create params for the where property in paramsObj
             switch (filterType) {
                 case ("Equals"):
-                    paramsObj.where = { [filterChoice]: searchTerm };
+                    paramsObj["where"].push({ [filterChoice] : searchTerm });
+                    filterType = "="
                     break;
 
                 case ("Does Not Equal"):
-                    paramsObj.where = { [filterChoice]: { "$ne": searchTerm } };
+                    paramsObj["where"].push({ [filterChoice] : { "$ne": searchTerm } });
+                    filterType = "!="
                     break;
             }
             console.log(paramsObj);
 
         } else if (filterId === "filter-number") {
-            // Run this switch when filter-text was used and create whereObj query
+            // Run this switch when filter-number was used and create params for the where property in paramsObj
             switch (filterType) {
                 case ("Equals"):
-                    paramsObj.where = { [filterChoice]: { "$eq": searchTerm } };
+                    paramsObj["where"].push({ [filterChoice] : { "$eq": searchTerm } });
+                    filterType = "="
                     break;
                 case ("Greater Than"):
-                    paramsObj.where = { [filterChoice]: { "$gt": searchTerm } };
+                    paramsObj["where"].push({ [filterChoice]: { "$gt": searchTerm } });
+                    filterType = ">"
                     break;
                 case ("Greater Than or Equals"):
-                    paramsObj.where = { [filterChoice]: { "$gte": searchTerm } };    
+                    paramsObj["where"].push({ [filterChoice]: { "$gte": searchTerm } });   
+                    filterType = ">="
                     break;
                 case ("Less Than"):
-                    paramsObj.where = { [filterChoice]: { "$lt": searchTerm } };
+                    paramsObj["where"].push({ [filterChoice]: { "$lt": searchTerm } });
+                    filterType = "<"
                     break;
                 case ("Less Than or Equals"):
-                    paramsObj.where = { [filterChoice]: { "$lte": searchTerm } };    
+                    paramsObj["where"].push({ [filterChoice]: { "$lte": searchTerm } });   
+                    filterType = "<="
                     break;
             }
         }
+        // Display search term and add to search term area
+        $("#current").append("<span className='small d-inline'>" + filterChoice + filterType + searchTerm + "&nbsp&nbsp</span>")
+
+        // Once filter data is set, run db query
+        requestData();
+    }
+
+    // Function to send an ajax post request to retrieve data
+    requestData = () => {
+        $.post("api/students", paramsObj)
+            .then((data) => {
+                // Empty previous data displayed
+                $("tbody").empty();
+                // Display new data
+                displayData(data);
+            }).catch((err) => {
+                console.log(err);
+            })
     }
 
     // CLICK FUNCTIONS ==========================================================
@@ -111,24 +148,35 @@ $(document).ready(() => {
         searchOptions();
     })
 
-    // Called when the Add Filter button is clicked
-    $("#filter").click(() => {
-        addFilter();
+    // When the Search button is clicked, previous search values are erased, the new values are grabbed from the filter and a db query is run
+    $("#search").click(() => {
+        // Erase previous search params
+        paramsObj = {
+            where: []
+        };
+        // Clear display of previous search terms
+        $("#current").empty();
+        // Create filter and run db query
+        getFilterInfo();
     })
 
-    // Called when the Search button is clicked
-    $("#search").click(() => {
-        // Send an ajax post request, including the stringified array
-        $.post("api/students", paramsObj)
-            .then((data) => {
-                console.log(data);
-            }).catch((err) => {
-                console.log(err);
-            })
+    // When the Add Filter button is clicked, the new search terms are added to the paramsObj and a db query is run
+    $("#filter").click(() => {
+        // Create filter and run db query
+        getFilterInfo();
+    })
+
+    // When the Clear Filters button is clicked, the paramsObj will be reset and the full db will be displayed
+    $("#clear").click(() => {
+        paramsObj = {
+            where: []
+        };
+        // Clear display of previous search terms
+        $("#current").empty();
+        requestData();
     })
 
     // ===========================================================================
     // ON PAGE LOAD
-    retrieveAll();
-
+    requestData();
 });
