@@ -24,10 +24,11 @@ module.exports = function (sequelize, DataTypes) {
         },
     })
 
-    // Create association between addresses and names
+    // Create association between addresses and names and classes and names
     Names.associate = models => {
-        Names.hasOne(models.Addresses)
-    };
+        Names.hasOne(models.Addresses),
+        Names.hasOne(models.Courses)
+    }
 
     return Names;
 }
