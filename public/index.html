@@ -35,7 +35,6 @@
                             <option selected>First Name</option>
                             <option>Last Name</option>
                             <option>Sex</option>
-                            <option>Age</option>
                             <option>Address</option>
                             <option>City</option>
                             <option>County</option>
@@ -93,30 +92,28 @@
                     <li>Use Clear Filters to remove all filters and see the full database.</li>
                 </ul>
             </div>
-        </div>        
-        
+        </div>  
         <!-- Area to display current search/filter terms -->
-        <div class="row mt-2">
-            <span class="small d-inline">Current search terms: &nbsp&nbsp</span>
-            <span class="small d-inline" id="current"></span>
+        <div class="row mt-2 small">
+            <span class="d-inline">Current search terms: &nbsp&nbsp</span>
+            <span id="current"></span>
         </div>
-        
         <!-- Table data display -->
         <div class="row mt-2">
             <table class="table table-sm table-bordered table-font">
                 <thead>
                     <tr>
-                        <th scope="col">First Name</th>
-                        <th scope="col">Last Name</th>
-                        <th scope="col">Sex</th>
-                        <th scope="col">Age</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">City</th>
-                        <th scope="col">County</th>
-                        <th scope="col">State</th>
-                        <th scope="col">Zip</th>
-                        <th scope="col">Subject</th>
-                        <th scope="col">Grade</th>
+                        <th scope="col"><a href="#" class="sort" id="name">First Name</a></th>
+                        <th scope="col"><a href="#" class="sort" id="name">Last Name</a></th>
+                        <th scope="col"><a href="#" class="sort" id="name">Sex</a></th>
+                        <th scope="col"><a href="#" class="sort" id="name">DOB</a></th>
+                        <th scope="col"><a href="#" class="sort" id="address">Address</a></th>
+                        <th scope="col"><a href="#" class="sort" id="address">City</a></th>
+                        <th scope="col"><a href="#" class="sort" id="address">County</a></th>
+                        <th scope="col"><a href="#" class="sort" id="address">State</a></th>
+                        <th scope="col"><a href="#" class="sort" id="address">Zip</a></th>
+                        <th scope="col"><a href="#" class="sort" id="course">Subject</a></th>
+                        <th scope="col"><a href="#" class="sort" id="course">Grade</a></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -129,5 +126,4 @@
         <!-- External javascript -->
         <script src="js/app.js"></script>
 </body>
-
 </html>

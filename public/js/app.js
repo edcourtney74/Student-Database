@@ -6,7 +6,8 @@ $(document).ready(() => {
     let paramsObj = {
         nameWhere: [],
         addressWhere: [],
-        courseWhere: []
+        courseWhere: [],
+        order: ["", "last_name", "asc"]
     };
 
     // GLOBAL FUNCTIONS
@@ -36,7 +37,7 @@ $(document).ready(() => {
                 $(".criteria").hide();
                 $("#sex").show();
                 break;
-            case "Age":
+            case "DOB":
             case "Grade":
             case "GPA":
                 $("#filter-number").show();
@@ -46,7 +47,6 @@ $(document).ready(() => {
                 break;
         }
     }
-
     // Function that saves info into paramsObj when Add Filter button is clicked
     getFilterInfo = () => {
         // Grab value from the initial filter
@@ -57,15 +57,9 @@ $(document).ready(() => {
         } else if (filterChoice === "Last Name") {
             filterChoice = "last_name"
         }
-        console.log("FilterChoice: " + filterChoice)
 
         // Grab value from the type of filter
         let filterType = $(".operator:visible").val()
-        console.log("FilterType: " + filterType)
-
-        // Grab id from the type of filter
-        let filterId = $(".operator:visible").attr("id");
-        console.log("FilterId: " + filterId)
 
         // Grab value from the search options
         let searchTerm = $(".criteria:visible").val()
@@ -77,7 +71,7 @@ $(document).ready(() => {
             case "first_name":
             case "last_name":
             case "Sex":
-            case "Age":
+            case "DOB":
                 table = "nameWhere";
                 break;
             
@@ -94,10 +88,12 @@ $(document).ready(() => {
                 table = "courseWhere";
                 break;
         }
-        // Run switch statement to push into paramsObj
+        // Run switch statement to push where parameter into paramsObj
         switch (filterType) {
             case ("Equals"):
+                // Where parameters
                 paramsObj[table].push({ [filterChoice]: { "$eq": searchTerm } });
+                // Symbol for search term display
                 filterType = "="
                 break;
 
@@ -126,9 +122,8 @@ $(document).ready(() => {
                 filterType = "<="
                 break;
         }
-
         // Display search term and add to search term area
-        $("#current").append("<span class='small d-inline'>" + filterChoice + filterType + searchTerm + "&nbsp&nbsp</span>")
+        $("#current").append("<span>" + filterChoice + filterType + searchTerm + "&nbsp&nbsp</span>")
 
         // Clear previous search terms
         $("#text-blank").val("");
@@ -141,7 +136,6 @@ $(document).ready(() => {
     requestData = () => {
         $.post("api/students", paramsObj)
             .then((data) => {
-                console.log(data);
                 // Empty previous data displayed
                 $("tbody").empty();
                 // Display new data
@@ -150,7 +144,8 @@ $(document).ready(() => {
                 console.log(err);
             })
     }
-    // Function to display data in the table once retrieved from a Names table search
+
+    // Function to display data in the table once retrieved from the db search
     displayData = data => {
         // Run a for loop to append data to the table
         for (let i = 0; i < data.length; i++) {
@@ -160,7 +155,7 @@ $(document).ready(() => {
             newRow.append("<td>" + data[i].first_name + "</td>");
             newRow.append("<td>" + data[i].last_name + "</td>");
             newRow.append("<td>" + data[i].sex + "</td>");
-            newRow.append("<td>" + data[i].age + "</td>");
+            newRow.append("<td>" + data[i].DOB + "</td>");
             newRow.append("<td>" + data[i].Address.address + "</td>");
             newRow.append("<td>" + data[i].Address.city + "</td>");
             newRow.append("<td>" + data[i].Address.county + "</td>");
@@ -174,13 +169,16 @@ $(document).ready(() => {
     }
     // CLICK FUNCTIONS ==========================================================
     // Called when an initial choice is made in the select box
-    $("#initial-choice").change(() => {
+    $("#initial-choice").change((event) => {
+        event.preventDefault();
         // Run searchOptions function on click
         searchOptions();
     })
 
     // When the Search button is clicked, previous search values are erased, the new values are grabbed from the filter and a db query is run
-    $("#search").click(() => {
+    $("#search").click((event) => {
+        event.preventDefault();
+        
         // Create filter and run db query
         getFilterInfo();
         
@@ -188,19 +186,20 @@ $(document).ready(() => {
         paramsObj = {
             nameWhere: [],
             addressWhere: [],
-            courseWhere: []
+            courseWhere: [],
+            order: ["", "last_name", "asc"]
         };
         // Clear display of previous search terms
         $("#current").empty();
         // Clear previous form data
         $("#text-blank").val("");
-        $("#number-blank").val("");
-
-        
+        $("#number-blank").val("");        
     })
 
     // When the Add Filter button is clicked, the new search terms are added to the paramsObj and a db query is run
-    $("#filter").click(() => {
+    $("#filter").click((event) => {
+        event.preventDefault();
+
         // Create filter and run db query
         getFilterInfo();
 
@@ -210,11 +209,14 @@ $(document).ready(() => {
     })
 
     // When the Clear Filters button is clicked, the paramsObj will be reset and the full db will be displayed
-    $("#clear").click(() => {
+    $("#clear").click((event) => {
+        event.preventDefault();
+        
         paramsObj = {
             nameWhere: [],
             addressWhere: [],
-            courseWhere: []
+            courseWhere: [],
+            order: ["", "last_name", "asc"]
         };
         // Clear display of previous stored search terms
         $("#current").empty();
@@ -224,6 +226,49 @@ $(document).ready(() => {
         $("#number-blank").val("");
 
         // Request full database
+        requestData();
+    })
+
+    // When the sort button is clicked at the top of a column row
+    $(".sort").click( function(event) {
+        event.preventDefault();
+
+        // Set table and column variables to add to order parameters 
+        let table = $(this).attr("id")
+        let column = $(this).text();
+
+        // Convert column header if first name or last name
+        if (column === "First Name") {
+            column = "first_name"
+        } else if (column === "Last Name") {
+            column = "last_name"
+        }
+
+        // Reset the paramsObj.order array
+        paramsObj.order = [];
+        // Push values grabbed into new order array
+        switch (table) {
+            case "name":
+                table = ""
+                break;
+            case "address":
+                table = "db.Addresses"
+                break;
+            case "course": 
+                table = "db.Courses"
+                break;
+        }
+        // Set all order as ascending by default, except for grade
+        let sort = "asc";
+        if (column === "Grade") {
+            sort = "desc"
+        }
+
+        paramsObj.order.push(table);
+        paramsObj.order.push(column);
+        paramsObj.order.push(sort);
+
+        // Make database request
         requestData();
     })
 
